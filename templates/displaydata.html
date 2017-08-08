@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+{% load poll_extras %}
+<hr style="height:1px;border:none;border-top:1px solid #000000;" />
+<label class="control-label" style="width:88px">项目名称:</label><strong>{{project.projectname|escape}}</strong><br>
+<label class="control-label" style="width:88px">项目类型:</label><strong>{{project.Assessmenttype|assesstype}}</strong><br>
+<label class="control-label" style="width:88px">等级:</label><strong>{{project.level|level}}</strong><br>
+<hr style="height:1px;border:none;border-top:1px solid #000000;" />
+<table class="table table-hover">
+<thead>
+<tr>
+<td class="col-lg-1 col-xs-1">
+<strong>要求</strong>
+</td>
+<td  class="col-lg-2 col-xs-2">
+<center>
+<strong>类型</strong>
+</center>
+</td  class="col-lg-1 col-xs-1">
+<td>
+<strong>等级</strong>
+</td>
+<td  class="col-lg-7 col-xs-7">
+<strong>内容</strong>
+</td>
+<td  class="col-lg-1 col-xs-1">
+<strong>符合程度</strong>
+</td>
+</tr>
+</thead>
+<tbody>
+{% for content in contents %}
+<tr>
+
+<td>
+ {{content.Requirement|Requirement}}
+</td>
+<td>
+<center>
+ {{content.datatype|datatype}}
+ </center>
+</td>
+<td>
+ {{content.content_id|getlevel}}
+</td>
+<td>
+ {{content.content_id|getcontent|linebreaks|escape}}
+</td>
+<td>
+ {% if content.match %}
+ {{content.match|match}}
+ {% endif %}
+</td>
+</tr>
+ {% endfor %}
+</tbody>
+</table>
+{%  include 'pagination.html'  %}
+<center>
+<a href="/index/" style="color:#303030"><h1><span class="glyphicon glyphicon-home"></span>&nbsp;return</h1></a>
+</center>
+{% endblock %}

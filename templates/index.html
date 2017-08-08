@@ -1,0 +1,102 @@
+<!-- index html -->
+{% extends "base.html" %}
+{%load poll_extras%}
+
+{% block javascript2 %}
+<script>
+$(document).ready(function() {
+var deletelist=new Array();
+var projectlist=new Array();
+var i=0;
+{% for projectobject in Project_table_objects %}
+deletelist[i]="delete"+{{projectobject.pk}}
+projectlist[i]={{projectobject.pk}}
+i++
+{% endfor %}
+for (var i=0; i<deletelist.length;i++){
+    document.getElementById(deletelist[i]).onclick=function() {
+ if (confirm("Are you to delete your project?")){
+    document.getElementById("deleteform").getElementsByTagName("input")[1].value=this.id.replace(/delete/,'');
+    document.getElementById("deleteform").submit();
+    return false
+     }      
+else{
+    return false
+} 
+    }
+};
+for (var i=0; i<projectlist.length;i++){
+
+$('#project'+projectlist[i]).hover(function(){
+    $("#widget"+this.id.replace('project','')).css("display","block");
+},function(){
+  $("#widget"+this.id.replace('project','')).css("display","none");
+}
+)
+};
+
+})
+</script>
+{% endblock %} 
+{% block content %}
+{% if username %}
+  <center>
+    <div style="font-size:30px"><a style="color:black" href="{% url 'assess:create'  %}">Create Project</a></div>
+  </center>
+{% endif %}
+<hr style="height:1px;border:none;border-top:1px solid #000000;" />
+<div class="row">
+<div class="col-lg-7 col-xs-8">
+<strong>评估项目</strong>
+</div>
+<div class="col-lg-3  col-xs-2">
+<strong>类型</strong>
+</div>
+<div class="col-lg-2 col-xs-2">
+<strong>等级</strong>
+</div>
+</div>
+{% for projectobject in Project_table_objects %}
+{# <div style="display:block;float:left:width:1000px;height:30px;margin-top:5px;magin-bottom:5px"> #}
+<div class="row" style="background-color:white">
+<hr style="height:0px;border:none;border-top:1px dashed #303030;" />
+<div class="col-lg-7 col-xs-8" id='project{{ projectobject.pk }}'>
+  {# <a class="project" href="/assess/displaydata/projectid={{projectobject.pk}}/">{{projectobject.projectname|escape}}</a> #}
+<div class="col-lg-3 col-xs-3">
+<a href="{% url 'assess:display' projectobject.pk  %}"  style="color:#090909;font-size:18px"><div>{{projectobject.projectname|escape}}</div></a>
+</div>
+<div class="col-lg-8 col-xs-9 col-lg-push-3 col-xs-push-0" id='widget{{ projectobject.pk }}' style="display:none">
+<div class="col-lg-4 col-xs-4">
+{# <a href="/assess/createselect/projectid={{projectobject.pk}}/" class="delete">修改完善</a>   #}
+<a href="{% url 'assess:modify' projectobject.pk  %}"><span class="glyphicon glyphicon-edit"></span>修改完善</a>  
+</div>
+<div class="col-lg-4 col-xs-4">
+<a href="/download/{{projectobject.pk}}/" style="color:#328A2C"><span class="glyphicon glyphicon-download"></span>下载为表格</a>
+</div>
+<div class="col-lg-4 col-xs-4">
+{# <a href="/assess/deletepage/projectid={{projectobject.pk}}" class="delete">删除</a>   #}
+<a href="javascript:void(0);" id='delete{{projectobject.id}}' style="color:#bd2f31"><span class="glyphicon glyphicon-trash"></span>删除</a>  
+<noscript>
+  <a href="/assess/deletepage/projectid={{projectobject.pk}}"><span class="glyphicon glyphicon-trash">删除</a>
+</noscript>
+</div>
+</div>
+</div>
+<div class="col-lg-3 col-xs-2">
+{{projectobject.Assessmenttype|assesstype}}
+</div>
+<div class="col-lg-2 col-xs-2">
+{{projectobject.level|level}}
+</div>
+</div>
+{% endfor %}
+<form method="post" action="{% url 'assess:delete' %}" id='deleteform'>
+{% csrf_token %}
+<table>
+<input type="hidden" name="projectid" value="" />
+   </table>
+</form>
+
+{%  include 'pagination.html'  %}
+{% endblock %}
+

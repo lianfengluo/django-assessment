@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+{% load static %}
+{% block javascript %}
+{# <script type="text/javascript" src="/static/js/checkloginvalidate.js"></script> #} 
+{# <script type="text/javascript" src="/static/js/loginformsubmit.js"></script> #}
+<script src="{% static "js/verify.js" %}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        // $("#logincsrf").val($.cookie("mycsrftoken"));
+        $.ajaxSetup({  
+             {# data: {csrfmiddlewaretoken: '{{ csrf_token }}' }, #}  
+             data: {csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val() },  
+             // data: {csrfmiddlewaretoken: $.cookie('luocsrftoken') },  
+        });  
+        $.ajax({
+            type: "POST",
+            url: "/getsession/", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致  
+            cache: false,
+            data: {},
+            dataType: "html",
+            success: function(result, statues, json) {
+                var data = JSON.parse(result);
+                if (data['username']){
+                    $('#username').val(data['username']);
+                    $('#password').val(data['password']);
+                };
+            },
+            error: function() {
+                console.log('error');
+            }
+        });
+        $.verify.verifyLogin();
+        $('#myErrorModal').on('show.bs.modal', function(e) {
+            $(this).find('.modal-dialog').css({
+                'margin-top': function() {
+                    var modalHeight = $('#myErrorModal').find('.modal-dialog').height();
+                    return ($(window).height() / 5);
+                }
+            });
+        });
+        // $.verify.verifyLogin();
+        $("body").keydown(function() {
+             if (event.keyCode == "13") {//keyCode=13是回车键
+                $("#myErrorModal").modal('hide')
+             }
+         });
+    })
+
+</script>
+
+<script type="text/javascript" src="{% static "js/button.js" %}"></script>
+
+{% endblock %}
+{% block css %}
+<style type="text/css">
+.col-center-block {  
+    float: none;  
+    display: block;  
+    margin-left: auto;  
+    margin-right: auto;  
+}  
+.error{
+    color: red;
+    font-size: 20px;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+{% comment %}
+<div align="center">
+<strong>
+    Account Login
+</strong>
+
+<form action="#" method="post" autocomplete="off">
+  {#  {% csrf_token %} #}
+    <table>
+<input type="password" style="position:absolute;top:-999px"/>
+    {% for field in form %}
+        <tr>
+            <td>{{ field }}</td>
+            {% if field.name == "username" %}
+            <td><span id="userresult"></span></td>
+            {% endif %}            
+            {% if field.name == "password" %}
+            <td><span id="passresult"></span></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+            <tr>
+        <td><input type="text" name="check_code" placeholder='验证码' style="height:35px;width:200px;font-size:20px" id="check_code" required/></td>
+        {# <td><span id="check_coderesult"></span></td> #}
+        </tr>
+        <tr>
+        <td><img src="/check_code/" onclick="ChangeCode(this); " style='border-radius: 5px;' ></td>
+        
+        </tr>
+        <tr><td><p>点击图片刷新</p></td></tr>
+
+        </tr>
+    </table>
+        <br>
+            <input placeholder="Login" type="submit" value="登录" onsubmit="return mySubmit(true)"/>
+            <input placeholder="reset" type="reset" value="重置" />
+</form>
+                <br>
+                    <a href="/register/" class="aa" style="font-size:20px;font-weight:bold">注册</a>
+</div>
+{% endcomment %}
+
+
+<div class="row" style="margin:0px;">
+    <div class="col-center-block col-lg-5 col-md-6 col-sm-8 col-xs-12" style="border: 1px solid silver;background-color:white">
+        <div style="font-size: 30px"><center>User Login</center></div>
+            <div style="padding: 10px 20px 10px;">
+             <center>
+             <div>
+
+             {% if Reminder %}
+                <p class="error">
+                    {{Reminder}}
+                </p>
+            {% endif %}
+{# <input type="hidden" name="csrfmiddlewaretoken"  value={{ csrf_token }}> #}
+
+            </div>
+                <form class="row" role="form" action="javascript:void(0)" method="post" autocomplete="off" id="loginform">
+                {# {% csrf_token %} #}
+                {# <input type="hidden" name="csrfmiddlewaretoken"  id="logincsrf")> #}
+                 {% csrf_token %}
+                <input type="password" style="position:absolute;top:-999px"/>
+                   {# {% for field in form %} #}
+                     {# {% if field.name == "username" %} #}
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="color:white;background-color:black;width:30%">username</span>
+                        <input id="username" class="form-control" name="username" required="" placeholder="6 letters or more" type="text">
+                       
+                        {# {{ field }} #}
+                        {# {{ form.username }} #}
+                    </div>
+                    <br>
+                        {# {% endif %} #}
+                        {# {% if field.name == "password" %} #}
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="color:white;background-color:black;width:30%">password</span>
+                        <input id="password" class="form-control" name="password" placeholder="6 letters or more" required="" type="password">
+                        {# {{ field }} #}
+                        {# {{ form.password }} #}
+
+                    </div>
+                    
+                        {# {% endif %} #}
+                    <br>
+                    {# {% endfor %} #}
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="color:white;background-color:black;width:30%">captcha</span>
+                        <input type="text" class="form-control" placeholder="input the captcha" id="check_code" name="check_code" required>
+                    </div>
+                    
+                    <br>
+                    <img src="/check_code/" id='captcha' onclick="ChangeCode(); " style='border-radius: 5px;' >
+                    <div onclick="ChangeCode();"><strong>change it</strong></div>
+                    <div class="error" id='loginerror' style="display:block">
+                    <br/>
+                    </div>
+                    {% comment %}
+                    <div class="row">
+                    <label for="rmbUser" style="font-size: 20px">
+                    remenber password
+                        <input name="rmbUser" id='rmbUser' type="checkbox" style="width: 20px;height: 20px">
+                    </label>
+                    </div>
+                    <br>
+                    {% endcomment %}
+                    <div class="row">
+                        <button type="submit" class="btn btn-default btn-lg" style="width:90%;color:white;background-color:black" >
+                            <span class="glyphicon glyphicon-log-in"></span> login
+                        </button>
+                        {% comment %}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="reset" class="btn btn-default btn-lg" style="color:white;background-color:black">
+                            <span class="glyphicon glyphicon-refresh"></span> reset
+                        </button>
+                        {% endcomment %}
+
+
+                        
+
+
+                    </div>
+                </form>
+            </center>
+            </div>
+    </div>
+</div>
+
+        <br>
+<div class="col-center-block col-lg-5 col-md-6 col-sm-8 col-xs-12" style="border: 1px solid silver;background-color:white">
+        <center style="font-size: 30px;">
+        <a href="/register/" style="color:#303030"><span class="glyphicon glyphicon-user"></span>Sign up</a>
+        {# &nbsp;&nbsp;&nbsp; #}
+{#         <a href=""><span class="glyphicon glyphicon-question-sign"></span>forget password</a> #}
+        </center>
+</div>
+
+{# show errors #}
+
+        <div class="modal fade" id="myErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Following error(s) occur
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="error" id="errorUser" style="width:100%;text-align:center"></div>
+                        <div class="error" id="errorPass" style="width:100%;text-align:center"></div>
+                        <div class="error" id="errorCap" style="width:100%;text-align:center"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">close
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+{# end #}
+
+<script>
+        // 点击一次,更改图片内容,
+        // function ChangeCode(ths){
+        //     ths.src = ths.src + '?';
+        // }
+        function ChangeCode(){
+          // alert($("#captcha").attr("src",路径));
+            $('#captcha').attr("src",$("#captcha").attr("src")+"?");
+        }
+</script>
+{% endblock %}

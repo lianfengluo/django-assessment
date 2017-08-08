@@ -1,0 +1,270 @@
+@media only screen and (max-device-width:1024px){
+body{
+    width: 100%;
+    position: relative;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+}
+body {
+    position: relative;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    width: 1000px;
+    margin: 0 auto;
+    padding: 10px;
+    color: #333;
+}
+input.invalid{
+    background-color: #FF9;
+    border: 2px red inset
+}
+
+.login-area {
+    font-size: 13px;
+    color: gray;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.delete{
+        font-size: 15px;
+    color: gray;
+    text-align: right;
+    text-decoration: none;
+    margin-right: 10px
+}
+.delete:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+.login-link {
+    color: gray;
+    text-decoration: none;
+}
+
+.login-link:visited {
+    color: gray;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.error {
+    color: red;
+}
+
+
+.label2 {
+  /*display: block;*/
+  font-size: 20px;
+  color: black;
+  font-family: Helvetica, Arial, sans-serif;
+}
+.label {
+  display: block;
+  font-size: 20px;
+  color: black;
+  font-family: Helvetica, Arial, sans-serif;
+}
+::-webkit-input-placeholder { /* WebKit browsers */ 
+color: #606060; 
+} 
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+color: #606060; 
+} 
+::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+color: #606060; 
+} 
+:-ms-input-placeholder { /* Internet Explorer 10+ */ 
+color: #606060; 
+} 
+input[type=email] {
+    outline:none;
+font-weight: bold;
+    color: #404040;
+    background-color:#BFBFBF ;
+border-radius:10px;
+    font-family: monospace;
+    font-size: 20px;
+}
+input[type=text] {
+    outline:none;
+    font-weight: bold;
+    color: #404040;
+    background-color:#BFBFBF ;
+border-radius:10px;
+    font-family: monospace;
+      font-size: 20px;
+}
+input[type=password] {
+    outline:none;
+    font-weight: bold;
+    color: #404040;
+    background-color:#BFBFBF ;
+border-radius:10px;
+    font-family: monospace;
+      font-size: 20px;
+}
+select {
+    outline:none;
+    font-weight: bold;
+    color: #404040;
+    background-color:#BFBFBF ;
+border-radius:10px;
+    font-family: monospace;
+      font-size: 20px;
+}
+
+
+
+input[type=submit] {
+        outline:none;
+    border-color: rgb(255,194,0)
+    position:relative;
+    font-size:20px;
+    font-weight: bold;
+    text-decoration:none;
+    color:#000;
+background: orange;
+margin: 0px;
+padding:5px;
+box-shadow: inset 0px 1px 0px orange, 0px 1px 0px orange;
+border-radius: 5px;
+border-left:0px;border-top:0px;border-right:0px;border-bottom:1px;
+}
+option {
+    border-radius: 5px;
+}
+input[type=reset] {
+    outline:none;
+        /*padding:5px;*/
+    border-color: rgb(255,194,0)
+    position:relative;
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-size:20px;
+    font-weight: bold;
+    text-decoration:none;
+    color:#000;
+background: orange;
+margin: 0px;
+padding:5px;
+box-shadow: inset 0px 1px 0px orange, 0px 1px 0px orange;
+border-radius: 5px;
+border-left:0px;border-top:0px;border-right:0px;border-bottom:1px;
+}
+
+.main-title {
+    display: block;
+    color: #222;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    text-decoration: none;
+}
+.aa {
+    display: block;
+    color: #222;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+}
+
+.post + .post {
+    margin-top: 15px;
+}
+
+.post-heading {
+    position: relative;
+    border-bottom: 3px solid #666;
+}
+
+.post-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.post-date {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: #999;
+
+}
+
+.post-content {
+    margin-top: 5px;
+}
+
+.project {
+    text-decoration:None;
+    color:orange;
+    font-weight:bold
+}
+.project:hover {
+    text-decoration:underline;
+    color: grey
+}
+.main-title:hover {
+    color: grey;
+    text-decoration: underline;
+}
+.aa:hover {
+    color: grey;
+    text-decoration: underline;
+}
+.hover1 {
+  text-decoration: none;
+  color: blue;
+    font-weight: bold;
+}
+.hover1:hover {
+  text-decoration: underline;
+  color: black;
+}
+
+.delete:hover {
+    color: black;
+    text-decoration: underline;
+}
+.delete{
+        font-size: 15px;
+    color: gray;
+    text-align: right;
+    text-decoration: none;
+    margin-right: 10px
+}
+.project {
+    text-decoration:None;
+    color:orange;
+    font-weight:bold
+}
+.project:hover {
+    text-decoration:underline;
+    color: grey
+}
+.main-title:hover {
+    color: grey;
+    text-decoration: underline;
+}
+html {
+scrollbar-arrow-color: #f4ae21; /*三角箭头的颜色*/
+scrollbar-face-color: #333; /*立体滚动条的颜色*/
+scrollbar-3dlight-color: #666; /*立体滚动条亮边的颜
+色*/scrollbar-highlight-color: #666; /*滚动条空白部分的
+颜色*/scrollbar-shadow-color: #999; /*立体滚动条阴影的颜
+色*/scrollbar-darkshadow-color: #666; /*立体滚动条强阴
+影的颜色*/scrollbar-track-color: #666; /*立体滚动条背景颜色*/
+scrollbar-base-color:#f8f8f8; /*滚动条的基本颜色*/
+/*Cursor:url(mouse.cur); 自定义个性鼠标*/
+}

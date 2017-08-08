@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load poll_extras %}
+{% load static %}
+{% block javascript %}
+    <script type="text/javascript" src="{% static "js/button2.js" %}"></script>
+{% endblock %}
+{% block content %}
+
+<label class="control-label" style="width:88px">项目名称:</label><strong>{{project.projectname|escape}}</strong><br>
+<label class="control-label" style="width:88px">项目类型:</label><strong>{{project.Assessmenttype|assesstype}}</strong><br>
+<label class="control-label" style="width:88px">等级:</label><strong>{{project.level|level}}</strong><br>
+<hr style="height:1px;border:none;border-top:1px solid #000000;" />
+<table class="table table-hover">
+<thead>
+<tr>
+<td class="col-lg-1 col-xs-1">
+<strong>要求</strong>
+</td>
+<td  class="col-lg-2 col-xs-2">
+<center>
+<strong>类型</strong>
+</center>
+</td  class="col-lg-1 col-xs-1">
+<td>
+<strong>等级</strong>
+</td>
+<td  class="col-lg-7 col-xs-7">
+<strong>内容</strong>
+</td>
+<td  class="col-lg-1 col-xs-1">
+<strong>符合程度</strong>
+</td>
+</tr>
+</thead>
+<tbody>
+ <form action="{% url 'assess:save'  %}" method="post">
+    {% csrf_token %}
+{% for content in contents %}
+<tr>
+
+<td>
+ {{content.Requirement|Requirement}}
+</td>
+<td>
+<center>
+ {{content.datatype|datatype}}
+ </center>
+</td>
+<td>
+ {{content.content_id|getlevel}}
+</td>
+<td>
+ {{content.content_id|getcontent|linebreaks|escape}}
+</td>
+<td>
+   {{content.pk|getobject|mydict:"match"}}
+ <input type="hidden" name="assessid" value="{{content.pk}}" />
+</td>
+</tr>
+{% endfor %}
+</tbody>
+<input type="hidden" name="project_id" value="{{project.pk}}" />
+ <input type="hidden" name="datatype" value="{{contents|getdatatype}}" />
+ <input type="hidden" name="Requirement" value="{{contents|getRequirement}}" />
+  </table>
+ <center>
+<button type="submit" class="btn btn-default btn-lg" style="color:white;background-color:black;" >
+    <span class="glyphicon glyphicon-save"></span> save
+</button>
+</center>
+</form>
+ <center>
+<a style="color:#303030" href="{% url 'assess:modify' project.pk  %}"><h2><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;return</h2></a>
+</center>
+<br>
+{% endblock %}

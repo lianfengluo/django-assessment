@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+{% block javascript %}
+<script src="{% static "js/verify.js" %}"></script>
+{# <script type="text/javascript" src="/static/js/checkregistervalidate.js"></script> #}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.verify.verifySignup();
+        $("body").keydown(function() {
+             if (event.keyCode == "13") {//keyCode=13是回车键
+                $("#myErrorModal").modal('hide')
+             }
+         });
+    })
+</script>
+<script type="text/javascript" src="{% static "js/button.js" %}"></script>
+{% endblock %}
+{% block css %}
+
+<style type="text/css">
+
+.col-center-block {  
+    float: none;  
+    display: block;  
+    margin-left: auto;  
+    margin-right: auto;  
+}  
+.error{
+    color: red;
+    /*font-size: 20px;*/
+}
+</style>
+{% endblock %}
+{% block content %}
+{% load poll_extras %}
+
+<div class="row" style="margin:0px">
+    <div class="col-center-block col-lg-5 col-md-6 col-sm-8 col-xs-12" style="border: 1px solid silver">
+    <div style="font-size: 30px"><center>Sign up</center></div>
+            <div style="padding: 10px 20px 10px;">
+             <center>
+             <div>
+             {% if Reminder %}
+                <p style="color: red;font-size:20px;">
+                    {{Reminder}}
+                </p>
+            {% endif %}
+
+            {% if error %}
+                 <p class="error"> 
+                 <span>     
+                 {{ error }}
+                 </span> 
+                 </p>   
+            {% endif %}
+            {% if errors %}
+            <p style="color: red;font-size:20px;">{% for error in errors  %}      
+                 <span>      
+                 {{ error }}  
+                 </span>   
+                 <br>
+                 {% endfor %} 
+                </p> 
+            {% endif %}
+            </div>
+                <form class="row" role="form" action="/register/" method="post" autocomplete="off">
+                {% csrf_token %}
+                <input type="password" style="position:absolute;top:-999px"/>
+                    <div class="input-group" style="width:100%" >
+                        <span class="input-group-addon" style="color:white;background-color:black;width:32%">username</span>
+                        {#<input type="text" class="form-control" placeholder="longer than 6 letters" required>#}
+                        {{register_form.username}}
+                    </div>
+                    <br>
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="color:white;background-color:black;width:32%">password</span>
+                        {#<input type="password" class="form-control" placeholder="longer than 6 letters" required>#}
+                        {{register_form.password}}
+                    </div>
+                    <br>
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="color:white;background-color:black;width:32%">verify</span>
+                     {#<input type="password" class="form-control" placeholder="longer than 6 letters" required>#}
+                        {{register_form.password2}}
+                    </div>
+                    <br>                    
+                    <div class="input-group" style="width:100%;">
+                        <span class="input-group-addon" style="color:white;background-color:black;width:32%">email</span>
+                        {#<input type="password" class="form-control" placeholder="longer than 6 letters" required>#}
+                        {{register_form.email}}
+                    </div>
+                    <br>
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="color:white;background-color:black;width:32%">nickname</span>
+                        {#<input type="password" class="form-control" placeholder="longer than 6 letters" required>#}
+                        {{register_form.nickname}}
+                    </div>
+                    <br>
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="color:white;background-color:black;width:32%">contactNO</span>
+                        {#<input type="password" class="form-control" placeholder="longer than 6 letters" required>#}
+                        {{register_form.contact_number}}
+                    </div>
+                    <br>
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="color:white;background-color:black;width:32%">captcha</span>
+                        <input type="text" class="form-control" placeholder="input the captcha" id="check_code" name="check_code" required>
+                    </div>
+                    <br>
+                    <img src="/check_code/" id="captcha" onclick="ChangeCode(); " style='border-radius: 5px;' >
+                    <div onclick="ChangeCode();"><strong>change it</strong></div>
+                    <br>
+                    {% comment %}
+                    <div class="row">
+                    <label for="rmbUser" style="font-size: 20px">
+                    remenber password
+                        <input name="rmbUser" id='rmbUser' type="checkbox" style="width: 20px;height: 20px">
+                    </label>
+                    </div>
+                    <br>
+                    {% endcomment %}
+                    <div class="row">
+                        <button type="submit" class="btn btn-default btn-lg" style="color:white;background-color:black;width:90%" >
+                            <span class="glyphicon glyphicon-ok"></span>&nbsp;Sign up
+                        </button>
+                        {% comment %}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="reset" class="btn btn-default btn-lg" style="color:white;background-color:black">
+                            <span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;reset&nbsp;&nbsp;
+                        </button>
+                        {% endcomment %}
+                    </div>
+                </form>
+            </center>
+            </div>
+    </div>
+</div>
+        <br>
+<div class="col-center-block col-lg-5 col-md-6 col-sm-8 col-xs-12" style="border: 1px solid silver">
+        <center style="font-size: 30px;">
+        <a href="/login/" style="color:#303030"><span class="glyphicon glyphicon-log-in"></span>&nbsp;return login</a>
+        </center>
+</div>
+
+{# show errors #}
+
+        <div class="modal fade" id="myErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Following error(s) occur
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="error" id="errorUser" style="width:100%;text-align:center"></div>
+                        <div class="error" id="errorPass" style="width:100%;text-align:center"></div>
+                        <div class="error" id="errorPass2" style="width:100%;text-align:center"></div>
+                        <div class="error" id="errorEmail" style="width:100%;text-align:center"></div>
+                        <div class="error" id="errorNick" style="width:100%;text-align:center"></div>
+                        <div class="error" id="errorCon" style="width:100%;text-align:center"></div>
+                        <div class="error" id="errorCap" style="width:100%;text-align:center"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+{# end #}
+
+<script>
+    function ChangeCode(){
+      // alert($("#captcha").attr("src",路径));
+        $('#captcha').attr("src",$("#captcha").attr("src")+"?");
+      }
+</script>
+  {% endblock %}

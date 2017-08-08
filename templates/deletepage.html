@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block css %}
+<style type="text/css">
+.col-center-block {  
+    float: none;  
+    display: block;  
+    margin-left: auto;  
+    margin-right: auto;  
+}  
+</style>
+{% endblock %}
+{% block content %}
+{%load poll_extras%}
+<div class="row" style="margin:0px 5px">
+    <div class="col-center-block col-lg-5 col-md-6 col-sm-8 col-xs-12" style="border: 1px solid grey">
+<strong>
+    Delete project
+</strong>
+<br>
+<strong>项目名字:{{project.projectname}}</strong><br>
+<strong>测评种类:{{project.Assessmenttype|assesstype}}</strong><br>
+<strong>等级:{{project.level|level}}</strong><br>
+<form method="post" action="{% url 'assess:delete' %}">
+{% csrf_token %}
+<table>
+    <input type="hidden" name="projectid" value="{{project.pk}}" />
+    </table>
+    <br>
+<button type="submit" class="btn btn-default btn-lg" style="color:white;background-color:black" >
+    <span class="glyphicon glyphicon-trash"></span> Delete!
+</button>    
+</form>
+<a href="/index/" style="color:#303030;font-weight:bold">return</a>
+</div>
+</div>
+{% endblock %}

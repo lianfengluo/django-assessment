@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load static %}
+{% load poll_extras %}
+{% block javascript %}
+<script src="{% static "js/verify.js" %}"></script>
+<script type="text/javascript" src="{% static "js/button.js" %}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.verify.verifyProfile();
+        $("body").keydown(function() {
+             if (event.keyCode == "13") {//keyCode=13是回车键
+                $("#myErrorModal").modal('hide')
+             }
+         });
+    })
+</script>
+{% endblock %}
+{% block css %}
+<style type="text/css">
+    .col-center-block {  
+    float: none;  
+    display: block;  
+    margin-left: auto;  
+    margin-right: auto;  
+}  
+.error{
+    color: red;
+    font-size: 15px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row" style="margin:0px 5px">
+    <center>
+        <div class="col-center-block col-lg-5 col-md-6 col-sm-8 col-xs-12" style="border: 1px solid silver">
+            <h2>
+                {{nickname}}'s profile
+            </h2>
+            <hr>
+                <div>
+                    {% if errors %}
+                    <p class="error">
+                        {% for error in errors  %}
+                        <span>
+                            {{ error }}
+                        </span>
+                        <br>
+                            {% endfor %}
+                        </br>
+                    </p>
+                    {% endif %}
+                    {% if reminder %}
+                    <tr>
+                        <div class="error">
+                            {{reminder}}
+                        </div>
+                    </tr>
+                    {% endif %}
+                </div>
+                <form action="{% url 'assess:profile'  %}" autocomplete="off" class="form-horizontal" method="post" role="form">
+                    {% csrf_token %}
+                    <table>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-xs-3 control-label">
+                                Username:
+                            </label>
+                            <div class="col-lg-8 col-xs-8">
+                                <input class="form-control" disabled="true" type="text" value="{{username}}">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-xs-3 control-label" for="email">
+                                Email:
+                            </label>
+                            <div class="col-lg-8 col-xs-8">
+                                {{form.email}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-xs-3 control-label" for="nickname">
+                                nickname:
+                            </label>
+                            <div class="col-lg-8 col-xs-8">
+                                {{form.nickname}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 col-xs-3 control-label" for="contact_number">
+                                contactNO:
+                            </label>
+                            <div class="col-lg-8 col-xs-8">
+                                {{form.contact_number}}
+                            </div>
+                        </div>
+                    </table>
+                    {% if error %}
+                    <div class="error">
+                        {{ error|mydict:"form" }}
+                    </div>
+                    {% endif %}
+                    <div class="row">
+                        <center>
+                            <button class="btn btn-default btn-lg" style="color:white;background-color:black;width:90%" type="submit">
+                                <span class="glyphicon glyphicon-check">
+                                </span>
+                                change
+                            </button>
+                            <button class="btn btn-default btn-lg" style="color:white;background-color:black;width:90%" type="reset">
+                                <span class="glyphicon glyphicon-refresh">
+                                </span>
+                                reset
+                            </button>
+                        </center>
+                    </div>
+                </form>
+                <div class="error">
+                    <strong>
+                        leave it if you don't want to change
+                    </strong>
+                </div>
+            </hr>
+        </div>
+    </center>
+    <br>
+        <div class="col-center-block col-lg-5 col-md-6 col-sm-8 col-xs-12" style="border: 1px solid silver">
+            <center style="font-size: 30px;">
+                <a href="/" style="color:#303030">
+                    <span class="glyphicon glyphicon-home">
+                    </span>
+                    return
+                </a>
+            </center>
+        </div>
+
+{# show errors #}
+
+    <div class="modal fade" id="myErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Following error(s) occur
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="error" id="errorEmail" style="width:100%;text-align:center"></div>
+                    <div class="error" id="errorNick" style="width:100%;text-align:center"></div>
+                    <div class="error" id="errorCon" style="width:100%;text-align:center"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+{# end #}
+
+
+</div>
+
+{% endblock %}

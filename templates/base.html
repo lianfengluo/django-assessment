@@ -1,0 +1,238 @@
+{% load poll_extras %}
+{% load static %}
+<html>
+
+<head>
+
+<script src="{% static "js/jquery3.1.1.js" %}"></script>
+{# <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/3.1.1/jquery.min.js"></script> #}
+
+<!--[if lt IE 9]>
+{# <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script> #}
+<script src="{% static "js/jquery1.9min.js" %}"></script>
+<![endif]-->
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<link rel="stylesheet" href="{% static "css/boostrap3.3.7min.css" %}">
+{# <link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"> #}
+
+<script src="{% static "js/boostrap3.3.7min.js" %}"></script>
+{# <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script> #}
+
+<script src="{% static "js/jquery-cookie1.4.1.js" %}"></script>
+{# <script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script> #}
+
+{# <link type="text/css" rel="stylesheet" href="/static/css/main.css" /> #}
+<title>Classified assessment app</title>
+<script src="{% static "js/jquery.h5validate.js" %}"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" type="image/x-icon" href="{% static "assessment.ico" %}" />
+
+{# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"> #}
+<style type="text/css">
+.form-control {
+    border-color: black;
+}
+@media screen and (max-width: 767px){
+.mobilesize {
+  /*display: none;*/
+  font-size: 13px;
+}
+.mobilehomesize {
+  /*display: none;*/
+  font-size: 18px;
+
+}
+.navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
+  /*display: none;*/
+  color: black;
+}
+.navbar-inverse .navbar-nav .open .dropdown-menu>li>a:hover {
+  /*display: none;*/
+  color: black;
+ background:#f5f5f5 ;
+}
+}
+@media screen and (max-width: 450px){
+.mobilesize {
+  /*display: none;*/
+  font-size: 10px;
+}
+
+}
+.floatleft{
+   float:left
+}
+</style>
+<script type="text/javascript">
+window.onload = function(){ init( ); } 
+function init() {
+function isIE(){
+    if(!!window.ActiveXObject || "ActiveXObject" in window){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function IEVersion(){
+  var rv = -1;
+  if (navigator.appName == 'Microsoft Internet Explorer'){
+    var ua = navigator.userAgent;
+    var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    if (re.exec(ua) != null)
+        //根据正则获取IE版本 MSIE$version
+      rv = parseFloat( RegExp.$1 );
+  }else if (navigator.appName == 'Netscape'){
+    var ua = navigator.userAgent;
+    var re  = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
+    if (re.exec(ua) != null)
+        //根据正则获取IE版本 rv:$version
+      rv = parseFloat( RegExp.$1 );
+  }
+  return rv;
+}
+if (isIE()) {
+
+    if (IEVersion() < 11) {
+        
+        if (IEVersion() > 6) {
+             alert('建议使用IE8以上版本的浏览器');
+        }else{
+            alert('请使用IE8以上版本的浏览器'); 
+            window.location.href='https://www.baidu.com';
+        };
+    }
+    // else{alert('test');}
+};
+
+}
+{% comment %}
+// $(document).ready(function() {
+// console.log($.cookie('luocsrftoken'));})
+    //     function getCookie(name) {  
+    //     var cookieValue = null;  
+    //     if (document.cookie && document.cookie != '') {  
+    //         var cookies = document.cookie.split(';');  
+    //         for (var i = 0; i < cookies.length; i++) {  
+    //             var cookie = jQuery.trim(cookies[i]);  
+    //             // Does this cookie string begin with the name we want?  
+    //             if (cookie.substring(0, name.length + 1) == (name + '=')) {  
+    //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));  
+    //                 break;  
+    //             }  
+    //         }  
+    //     }  
+    //     return cookieValue;  
+    // }  
+    // console.log(getCookie('csrftoken'))
+{% endcomment %}
+</script>
+{% block javascript %}
+{% endblock %}
+{% block css %}
+{% endblock %}
+</head>
+<body style="background-color:#f9f9f9">
+<div class="navbar navbar-fixed-top navbar-inverse" role="navigation" style="height: 60px">
+    <div class="container-fluid"  style="height: 60px">
+    <div>
+        <ul class="nav navbar-nav" style="width:100%;height:60px;margin:0px" >
+            <li class="active mobilesize floatleft" style="width:33.5%;color:white;"><p class="navbar-brand mobilesize" style="color:white;">
+          Classified assessment app
+        </p></li>
+        {% if username %}
+            <li class="floatleft" style="width:33%;text-align:center;float:left;font-size:30px;height:60px;"><a href="/index/" class="mobilehomesize" style="padding:15px 0px 15px 0px;"><span class="glyphicon glyphicon-home"></span></a></li>
+            <li style="width:16.7%;height:60px;" class="floatleft">
+            <p class="navbar-brand mobilesize" style="color:white;float:right">
+            {{nickname}}
+            </p>
+            {# <a href="javascript:void(0)"  style="color:white"></a> #}
+            </li>
+            <li class="dropdown floatleft" style="width:16.75%;height:60px;text-align:right;font-size:30px;">
+                <a href="javascript:void(0)" class="dropdown-toggle mobilehomesize" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-cog"></span>
+                </a>
+              <ul class="dropdown-menu mobilefontcolor" style="background:#FFFFFF;float:right">
+                    <li><a href="{% url 'assess:profile'  %}"><span class="glyphicon glyphicon-user"></span>profit</a></li>
+                    <li><a class="mobilefontcolor" href="{% url 'assess:logout'  %}"><span class="glyphicon glyphicon-log-out"></span>logout</a></li>
+              </ul>
+            </li>
+        {% else %}
+
+                <li class="floatleft" style="width:33%;height:60px;text-align:center;font-size:20px"><a href="/login/"><span class="glyphicon glyphicon-log-in">&nbsp;login</span></a></li>
+                <li class="floatleft" style="width:33%;height:60px;text-align:center;font-size:20px"><a href="/register/"><span class="glyphicon glyphicon-user">Signup</span></a></li>
+            
+        {% endif %}
+      </ul>
+    </div>
+    </div>
+</div>
+{% comment %}
+<div class="navbar navbar-fixed-top navbar-inverse" role="navigation"  style="height: 60px">
+    <div class="container">
+        <div class="navbar-header mobilenone" style="width:33%">
+        <p class="navbar-brand mobilesize" style="color:white">
+          Classified assessment app
+        </p>
+        </div>
+        <div class="navbar-collapse  mobilesize" style="width:67%">
+        {% if username %}
+        <center>
+        <ul class="nav navbar-nav col-xs-4 col-lg-push-1 col-xs-push-1 col-md-push-1 col-sm-push-1 mobilehomesize" style="color:white;float:left">
+          <li class='col-xs-3' style="font-size:40px;margin-right:0px;"><a href="/index/" style="width:130px"><span class="glyphicon glyphicon-home"></span></a></li>
+        </ul>
+        </center>
+        <div class="navbar-right">
+          <ul class="nav navbar-nav col-xs-5" style="color:white;float:left">
+                  <li class='col-xs-3 col-xs-push-3 col-sm-push-0 col-md-push-0 col-lg-push-0' style="margin-right:0px;float:left;"><a href="javascript:void(0)"  style="width:70px;color:white">{{nickname}}</a></li>
+                  <li class='col-xs-3 col-xs-push-6 col-sm-push-9 col-md-push-9 col-lg-push-9' style="margin-right:0px;float:left;color:black;"class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)"  style="width:80px">
+                      <span class="glyphicon glyphicon-cog"></span>  <span class="caret"></span></a>
+                      <ul class="dropdown-menu mobilefontcolor" role="menu1" style="background:#C0C0C0;float:right">
+                    <li><a href="{% url 'assess:profile'  %}"><span class="glyphicon glyphicon-user"></span>profit</a></li>
+                    <li><a class="mobilefontcolor" href="{% url 'assess:logout'  %}"><span class="glyphicon glyphicon-log-out"></span>logout</a></li>
+                      </ul>
+                    </li>
+          </ul>
+        </div>
+        {% else %}
+            <ul class="nav navbar-nav col-xs-8 col-lg-push-4 col-md-push-4 col-sm-push-4 col-xs-push-3">
+                <li class="col-xs-4 col-lg-push-2 col-md-push-1 col-sm-push-1 col-xs-push-1"  style="margin-right:30px"><a href="/login/"><span class="glyphicon glyphicon-log-in">&nbsp;login</span></a></li>
+                <li class="col-xs-3 col-sm-pull-1 col-xs-pull-1"><a href="/register/"><span class="glyphicon glyphicon-user">Sign&nbsp;up</span></a></li>
+            </ul>
+        {% endif %}
+        </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+</div>
+{% endcomment %}
+  
+
+  <div class="container" style="margin-top:100px">
+<noscript><center><strong class="error">this page only works on javascript</center></strong>
+</noscript>
+  {% block content %}
+  {% endblock %}
+  {% block javascript2 %}
+{% endblock %}
+</div>
+{% comment %}
+<div class="navbar-fixed-bottom navbar-inverse" style="color:white">
+  <ul class="nav nav-pills">
+    <li style="width:49%"><a href="#">test1</a></li>
+    <li style="width:49%"><a href="#">test2</a></li>
+  </ul>
+  <ul class="nav nav-pills" style="width:99%"><li style="width:100%"><a href="#"><center>test</center></a></li></ul>
+</div>
+<center>
+{% endcomment %}
+<div class="row footer-bottom footer" style="margin-top:50px">
+<center>
+&copy; 2017 luolianfeng's classified assessment app [About - <span class="glyphicon glyphicon-envelope">1014646056@qq.com</span>]
+</center>
+</div>
+</center>
+  </div>
+</body>
+</html>

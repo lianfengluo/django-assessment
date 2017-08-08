@@ -1,0 +1,38 @@
+<style type="text/css">
+a{
+    color: #606060;
+}
+
+</style>
+
+<center>
+{% if cpage.has_previous %}
+        <a href="?page={{  cpage.previous_page_number }}">
+            <strong>
+                上一页
+            </strong>
+        </a>
+{% endif %}
+{% for p in pages.page_range %}
+{% ifnotequal p cpage.number %}
+        <a href="?page={{ p }}">
+            <strong>
+                {{ p }}
+            </strong>
+        </a>
+ {% else %}
+    <strong color>
+          <font color="black">{{ p }} </font> 
+        </strong>
+ {% endifnotequal %}
+ {% endfor %}
+ {% if cpage.has_next %}
+        <a href="?page={{ cpage.next_page_number }}">
+            <strong>
+                下一页
+            </strong>
+        </a>
+{% endif %}
+<hr>
+</div>
+</center>

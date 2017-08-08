@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% load poll_extras %}
+{% block javascript %}
+<script type="text/javascript" >
+$(document).ready(function()
+    {initAll();initPage();})
+// window.attachEvent('onload',initAll)//IE中 
+// window.attachEvent('onload',initPage)//IE中 
+// } 
+// else{ 
+// window.addEventListener('load',initAll,false);//firefox 
+// window.addEventListener('load',initPage,false);//firefox 
+// }
+function initPage(){
+  if (document.getElementById){
+  document.getElementById("id_Requirement").onchange=change;
+  }
+  else{
+    alert("Sorry ,your browser not support javascript");
+  }
+}
+
+function change()
+{
+    datatype(this.value)
+    function datatype(value){
+    if (value=='1')
+  {document.getElementById("datatype").innerHTML='{{ form|mydict:'datatype'|strip|selecttech|safe}}';}
+   else if (value=='2')
+  {document.getElementById("datatype").innerHTML='{{ form|mydict:'datatype'|strip|selectmgt|safe}}';}
+      else
+  {document.getElementById("datatype").innerHTML='{{ form|mydict:'datatype'|strip|safe}}';}
+};
+}
+</script>
+<script type="text/javascript" src="{% static "js/button2.js" %}"></script>
+{% endblock %}
+{% block css %}
+<style type="text/css">
+
+.error{
+    color: red;
+    font-size: 20px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div>
+<center>
+<strong>
+    Select your assessment type
+</strong>
+<br>
+<br>
+<strong><td>项目名称:</td>{{project.projectname}}</strong><br>
+<strong><td>项目类型:</td>{{project.Assessmenttype|assesstype}}</strong><br>
+<strong><td>等级:</td>{{project.level|level}}</strong><br>
+<p>{% if form.non_field_errors  %}      
+     <span class="error">      
+     {{ form.non_field_errors|join:", " }}      
+     </span>     
+      {% endif %}</p>
+<p style="color: red;">
+    {{Reminder}}
+</p>
+<form action="{% url 'assess:content'  %}" method="get">
+    <table>
+    {% for field in form %}
+        <tr>
+            <td>{{ field.label_tag }}</td>
+  {% comment %}         {% if field.name == 'Requirement' %}
+           <td> <select id="id_Requirement" name="Requirement" style="font-size:25px;width:250px" />
+              {% for value in field.field.choices %}
+              <option value={{value|mydict:0}}>{{value|mydict:1}}</option>
+              {%endfor%}
+            </select></td>{% endcomment %}
+            {% if field.name == 'datatype' %}
+            <td id='datatype'>
+            <noscript>
+          {{field|escape}}
+            </noscript></td>
+            {% else  %}
+            <td>{{ field|escape}}</td>
+            {% endif %}
+            <td class="error">{{ field.errors }}</td>
+        </tr>
+    {% endfor %}
+        <input type="hidden" name="project_id" value="{{project.pk}}" />
+    </table>
+        <br>
+                <button type="submit" class="btn btn-default btn-lg" style="color:white;background-color:black;" >
+        <span class="glyphicon glyphicon-search"></span> 测评
+    </button>
+</form>
+</center>
+</div>
+<br>
+<center>
+<a href="/index/" style="color:#303030"><h1><span class="glyphicon glyphicon-home"></span>&nbsp;return</h1></a>
+</center>
+{% endblock %}
